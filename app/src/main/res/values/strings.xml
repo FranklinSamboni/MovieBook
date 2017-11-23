@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MovieBook</string>
+
+    <string-array name="MoviesArray">
+        <item>Popular Movies</item>
+        <item>Top Rated Movies</item>
+        <item>Upcoming Movies</item>
+    </string-array>
+
+    <string-array name="SeriesArray">
+        <item>Popular Series</item>
+        <item>Top Rated Series</item>
+    </string-array>
+</resources>
