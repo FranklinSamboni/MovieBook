@@ -31,15 +31,19 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.supportTestRunnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.supportTestEspressoVersion"
-    implementation 'com.android.support:recyclerview-v7:27.0.0'
-    implementation 'com.android.support:design:27.0.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.okhttp3:okhttp:3.9.1'
-    compile 'com.google.dagger:dagger-android:2.11'
-    compile 'com.google.dagger:dagger-android-support:2.11' // if you use the support libraries
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+
+    implementation "com.android.support:recyclerview-v7:$rootProject.supportRecyclerView"
+    implementation "com.android.support:design:$rootProject.supportDesign"
+    compile "com.squareup.picasso:picasso:$rootProject.squareupPicasso"
+    compile "com.squareup.retrofit2:retrofit:$rootProject.squareupRetrofit"
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.squareupRetrofitConverterGson"
+    compile "com.squareup.okhttp3:okhttp:$rootProject.squareupOkhttp3"
+    compile "com.google.dagger:dagger-android:$rootProject.googleDagger"
+    compile "com.google.dagger:dagger-android-support:$rootProject.googleDagger"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.googleDagger"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.googleDagger"
+    compile "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroid"
+    compile "io.reactivex.rxjava2:rxjava:$rootProject.rxJava"
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
 }

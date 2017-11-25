@@ -35,4 +35,15 @@ ext {
     constraintLayoutVersion = '1.0.2'
     supportTestRunnerVersion = '1.0.1'
     supportTestEspressoVersion = '3.0.1'
+
+    supportRecyclerView = '27.0.0'
+    supportDesign = '27.0.0'
+    squareupPicasso = '2.5.2'
+    squareupRetrofit = '2.3.0'
+    squareupRetrofitConverterGson = '2.3.0'
+    squareupOkhttp3 = '3.9.1'
+    googleDagger = '2.11'
+    rxAndroid = '2.0.1'
+    rxJava = '2.1.5'
+
 }

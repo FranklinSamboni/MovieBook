@@ -7,6 +7,16 @@ import com.frank.moviebook.data.source.MovieRepository;
 import com.frank.moviebook.data.source.remote.Response.MovieDbResponse;
 import com.frank.moviebook.data.source.remote.Response.SerieDbResponse;
 
+import java.util.List;
+
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,13 +40,16 @@ public class MovieRemoteDataSource implements MovieRepository {
     * */
 
     @Override //No es necesario para la fuente de datos remota
-    public long save(Movie movie) { return 0; }
+    public long save(Movie movie) {
+        return 0;
+    }
 
     @Override //No es necesario para la fuente de datos remota
-    public void deleteMoviesByCategory(int category) {  }
+    public void deleteMoviesByCategory(int category) {
+    }
 
     @Override
-    public void getMovies(final int category, final MovieRepository.ListMovieCallBack callBack){
+    public void getMovies(final int category, final MovieRepository.ListMovieCallBack callBack) {
         String url = Globals.Category.nameCategory[category];
         Call<MovieDbResponse> call = service.getMovies(
                 url,
@@ -45,18 +58,42 @@ public class MovieRemoteDataSource implements MovieRepository {
                 Globals.PAGE
         );
 
+        /*single.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Function<MovieDbResponse, List<Movie>>() {
+                    @Override
+                    public List<Movie> apply(MovieDbResponse movieDbResponse) throws Exception {
+                        return movieDbResponse.getResults();
+                    }
+                })
+                .subscribe(new SingleObserver<List<Movie>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(List<Movie> movies) {
+                        callBack.onMoviesLoaded(movies);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callBack.onError(e.getMessage());
+                    }
+                });*/
+
         call.enqueue(new Callback<MovieDbResponse>() {
             @Override
             public void onResponse(Call<MovieDbResponse> call, Response<MovieDbResponse> response) {
-                if(response.code() == 200)
-                {
+                if (response.code() == 200) {
                     MovieDbResponse dbResponse = response.body();
-                    for(Movie mv : dbResponse.getResults()){
-                        mv.setCategory(category);
+                    for (Movie movie : dbResponse.getResults()) {
+                        movie.setCategory(category);
                     }
                     callBack.onMoviesLoaded(dbResponse.getResults());
 
-                }else{
+                } else {
                     callBack.onError("Error, no fue posible obtener información de las peliculas ");
                 }
             }
@@ -66,16 +103,20 @@ public class MovieRemoteDataSource implements MovieRepository {
                 callBack.onError(t.getMessage());
             }
         });
+
     }
 
     /*SERIES
     * */
 
     @Override //No es necesario para la fuente de datos remota
-    public long save(Serie serie) { return 0;  }
+    public long save(Serie serie) {
+        return 0;
+    }
 
     @Override //No es necesario para la fuente de datos remota
-    public void deleteSerieByCategory(int category) {  }
+    public void deleteSerieByCategory(int category) {
+    }
 
     @Override
     public void getSerie(final int category, final ListSerieCallBack callBack) {
@@ -86,18 +127,41 @@ public class MovieRemoteDataSource implements MovieRepository {
                 Globals.PAGE
         );
 
+        /*Call.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Function<SerieDbResponse, List<Serie>>() {
+                    @Override
+                    public List<Serie> apply(SerieDbResponse serieDbResponse) throws Exception {
+                        return serieDbResponse.getResults();
+                    }
+                })
+                .subscribe(new SingleObserver<List<Serie>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(List<Serie> series) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });*/
         call.enqueue(new Callback<SerieDbResponse>() {
             @Override
             public void onResponse(Call<SerieDbResponse> call, Response<SerieDbResponse> response) {
-                if(response.code() == 200)
-                {
+                if (response.code() == 200) {
                     SerieDbResponse dbResponse = response.body();
-                    for(Serie serie : dbResponse.getResults()){
+                    for (Serie serie : dbResponse.getResults()) {
                         serie.setCategory(category);
                     }
                     callBack.onSeriesLoaded(dbResponse.getResults());
 
-                }else{
+                } else {
                     callBack.onError("Error, no fue posible obtener información de las peliculas ");
                 }
             }

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import com.frank.moviebook.MovieBookApp;
 import com.frank.moviebook.R;
@@ -43,12 +44,32 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         setupInjection();
 
+        setupToolbar();
+        setupRecyclerView();
+
+        mainViewModel.getMovies();
+        mainViewModel.getSeries();
+    }
+
+
+    private void setupInjection() {
+        MovieBookApp app = (MovieBookApp) getApplication();
+        MainComponent mainComponent = app.getMainComponent(this);
+        mainComponent.inject(this);
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = binding.toolBar;
+        toolbar.setTitle(getString(R.string.app_name));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorAccent));
+        setSupportActionBar(toolbar);
+    }
+
+    private void setupRecyclerView(){
         RecyclerView categoryRecyclerView = binding.categoryReciclerView;
         categoryRecyclerView.setAdapter(categoryAdapter);
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
 
-        mainViewModel.getMovies();
-        mainViewModel.getSeries();
     }
 
     @Override
@@ -86,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public void showInitialMovie(Movie movie) {
-        binding.setInitialmovie(movie);
+        categoryAdapter.showInitialMovie(movie);
     }
 
     @Override
@@ -94,11 +115,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         Snackbar.make(binding.mainLinearLayout, message, Snackbar.LENGTH_LONG).show();
     }
 
-    private void setupInjection() {
-        MovieBookApp app = (MovieBookApp) getApplication();
-        MainComponent mainComponent = app.getMainComponent(this);
-        mainComponent.inject(this);
-    }
+
 
 
 }

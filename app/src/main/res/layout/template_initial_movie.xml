@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="initialmovie"
+            type="com.frank.moviebook.data.Movie" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/initial_movie_img_height">
+
+        <ImageView
+            android:id="@+id/initial_movie"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/initial_movie_img_height"
+            android:background="@color/colorAccent"
+            android:scaleType="centerCrop"
+            app:loadImage="@{initialmovie.backdropPath}" />
+        />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/initial_movie_img_height"
+            android:background="@drawable/movie_mask" />
+
+        <TextView
+            android:id="@+id/initial_movie_text"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/initial_movie"
+            android:padding="10dp"
+            android:text="@{initialmovie.title}"
+            android:textColor="@color/colorAccent" />
+    </RelativeLayout>
+
+</layout>
