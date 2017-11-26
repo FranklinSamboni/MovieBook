@@ -13,21 +13,18 @@ import com.frank.moviebook.MovieBookApp;
 import com.frank.moviebook.R;
 import com.frank.moviebook.data.Movie;
 import com.frank.moviebook.data.Serie;
-import com.frank.moviebook.data.source.MovieRepository;
-import com.frank.moviebook.data.source.MovieRepositoryImpl;
 import com.frank.moviebook.databinding.ActivityMainBinding;
+import com.frank.moviebook.moviedatail.ui.MovieDetailActivity;
 import com.frank.moviebook.movies.MainViewModel;
 import com.frank.moviebook.movies.adapters.CategoryAdapter;
 import com.frank.moviebook.movies.di.MainComponent;
+import com.frank.moviebook.moviedatail.ui.SerieDetailActivity;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity implements MainActivityView {
-
+public class MainActivity extends AppCompatActivity implements MainActivityView, ItemClickListener {
 
     ActivityMainBinding binding;
 
@@ -54,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     private void setupInjection() {
         MovieBookApp app = (MovieBookApp) getApplication();
-        MainComponent mainComponent = app.getMainComponent(this);
+        MainComponent mainComponent = app.getMainComponent(this, this);
         mainComponent.inject(this);
     }
 
@@ -69,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         RecyclerView categoryRecyclerView = binding.categoryReciclerView;
         categoryRecyclerView.setAdapter(categoryAdapter);
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
-
     }
 
     @Override
@@ -78,31 +74,33 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     }
 
     @Override
+    protected void onDestroy() {
+        mainViewModel.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
     public void navigateToMovieDetail(int idMovie) {
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this,MovieDetailActivity.class);
+        intent.putExtra("idMovie",idMovie);
         startActivity(intent);
-        finish();
     }
 
     @Override
     public void navigateToSerieDetail(int idSerie) {
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this,SerieDetailActivity.class);
+        intent.putExtra("idSerie",idSerie);
         startActivity(intent);
-        finish();
     }
 
     @Override
-    public void showMovies(List<Movie> movies) {
-        categoryAdapter.addMovies(
-                getResources().getStringArray(R.array.MoviesArray)[movies.get(0).getCategory()],
-                movies);
+    public void showMovies(String title, List<Movie> movies) {
+        categoryAdapter.addMovies(title,movies);
     }
 
     @Override
-    public void showSeries(List<Serie> series) {
-        categoryAdapter.addSeries(
-                getResources().getStringArray(R.array.SeriesArray)[series.get(0).getCategory()],
-                series);
+    public void showSeries(String title,List<Serie> series) {
+        categoryAdapter.addSeries(title, series);
     }
 
     @Override
@@ -114,8 +112,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     public void showError(String message) {
         Snackbar.make(binding.mainLinearLayout, message, Snackbar.LENGTH_LONG).show();
     }
-
-
-
 
 }

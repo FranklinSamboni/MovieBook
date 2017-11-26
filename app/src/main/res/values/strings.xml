@@ -11,4 +11,8 @@
         <item>Popular Series</item>
         <item>Top Rated Series</item>
     </string-array>
+
+    <string name="votes">Votes %d </string>
+    <string name="average">Average %.2f </string>
+    <string name="title_activity_movie_detail">MovieDetailActivity</string>
 </resources>

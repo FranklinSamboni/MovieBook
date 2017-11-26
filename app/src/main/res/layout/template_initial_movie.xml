@@ -10,6 +10,7 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/initial_movie_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/initial_movie_img_height">
 

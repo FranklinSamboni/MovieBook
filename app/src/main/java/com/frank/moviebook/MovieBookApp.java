@@ -4,9 +4,13 @@ import android.app.Application;
 
 import com.frank.moviebook.Util.Globals;
 import com.frank.moviebook.libs.LibsModule;
+import com.frank.moviebook.moviedatail.di.DaggerDetailComponent;
+import com.frank.moviebook.moviedatail.di.DetailComponent;
+import com.frank.moviebook.moviedatail.di.DetailModule;
 import com.frank.moviebook.movies.di.DaggerMainComponent;
 import com.frank.moviebook.movies.di.MainComponent;
 import com.frank.moviebook.movies.di.MainModule;
+import com.frank.moviebook.movies.ui.ItemClickListener;
 import com.frank.moviebook.movies.ui.MainActivityView;
 
 import dagger.Module;
@@ -22,13 +26,23 @@ public class MovieBookApp extends Application {
         super.onCreate();
     }
 
-    public MainComponent getMainComponent(MainActivityView mainActivityView){
+    public MainComponent getMainComponent(MainActivityView mainActivityView, ItemClickListener itemClickListener){
         return DaggerMainComponent
                 .builder()
                 .movieBookModule(getMovieBookModule())
                 .libsModule(getLibsModule())
-                .mainModule(getMainModule(mainActivityView))
+                .mainModule(getMainModule(mainActivityView, itemClickListener))
                 .build();
+    }
+
+    public DetailComponent getDetailComponent(){
+        return DaggerDetailComponent
+                .builder()
+                .movieBookModule(getMovieBookModule())
+                .libsModule(getLibsModule())
+                .detailModule(getDetailModule())
+                .build();
+
     }
 
     public MovieBookModule getMovieBookModule() {
@@ -39,7 +53,11 @@ public class MovieBookApp extends Application {
         return new LibsModule(Globals.BASE_URL);
     }
 
-    public MainModule getMainModule(MainActivityView mainActivityView) {
-        return new MainModule(mainActivityView);
+    public MainModule getMainModule(MainActivityView mainActivityView, ItemClickListener itemClickListener) {
+        return new MainModule(mainActivityView, itemClickListener);
+    }
+
+    public DetailModule getDetailModule() {
+        return new DetailModule();
     }
 }

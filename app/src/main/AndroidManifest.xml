@@ -20,6 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".moviedatail.ui.MovieDetailActivity" />
+        <activity android:name=".moviedatail.ui.SerieDetailActivity"></activity>
     </application>
 
 </manifest>

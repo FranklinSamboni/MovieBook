@@ -10,6 +10,7 @@ import com.frank.moviebook.data.source.remote.MovieRemoteDataSource;
 
 import java.util.List;
 
+import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.Retrofit;
 
 /**
@@ -22,11 +23,12 @@ public class MovieRepositoryImpl implements MovieRepository {
     private MovieRepository movieRemoteDataSource;
 
     private Context context;
+    private CompositeDisposable compositeDisposable;
 
-    public MovieRepositoryImpl(Context context, Retrofit retrofit) {
+    public MovieRepositoryImpl(Context context, Retrofit retrofit, CompositeDisposable compositeDisposable) {
         this.context = context;
         this.movieLocalDataSource = new MovieLocalDataSource(context);
-        this.movieRemoteDataSource = new MovieRemoteDataSource(retrofit);
+        this.movieRemoteDataSource = new MovieRemoteDataSource(retrofit, compositeDisposable);
     }
 
     /*PELICULAS
@@ -36,22 +38,22 @@ public class MovieRepositoryImpl implements MovieRepository {
     public long save(Movie movie) { return 0; }
 
     @Override //NO es necesario aqui
-    public void deleteMoviesByCategory(int category) {}
+    public void deleteMovies() {}
 
     @Override
-    public void getMovies(final int category, final MovieRepository.ListMovieCallBack callBack) {
+    public void getMovies(final MovieRepository.ListMovieCallBack callBack) {
 
         if(CheckConnection.isConected(context)){
-            movieRemoteDataSource.getMovies(category,new ListMovieCallBack() {
+            movieRemoteDataSource.getMovies(new ListMovieCallBack() {
                 @Override
                 public void onMoviesLoaded(List<Movie> data) {
-                    refreshLocalMovies(category,data);
+                    refreshLocalMovies(data);
                     callBack.onMoviesLoaded(data);
                 }
 
                 @Override
                 public void onError(String message) {
-                    movieLocalDataSource.getMovies(category,new ListMovieCallBack() {
+                    movieLocalDataSource.getMovies(new ListMovieCallBack() {
                         @Override
                         public void onMoviesLoaded(List<Movie> data) {
                             callBack.onMoviesLoaded(data);
@@ -66,7 +68,7 @@ public class MovieRepositoryImpl implements MovieRepository {
             });
         }
         else{
-            movieLocalDataSource.getMovies(category,new ListMovieCallBack() {
+            movieLocalDataSource.getMovies(new ListMovieCallBack() {
                 @Override
                 public void onMoviesLoaded(List<Movie> data) {
                     callBack.onMoviesLoaded(data);
@@ -80,6 +82,11 @@ public class MovieRepositoryImpl implements MovieRepository {
         }
     }
 
+    @Override
+    public Movie getMovieById(int id) {
+        return movieLocalDataSource.getMovieById(id);
+    }
+
 
 
     /*SERIES
@@ -89,22 +96,22 @@ public class MovieRepositoryImpl implements MovieRepository {
     public long save(Serie serie) { return 0; }
 
     @Override //NO es necesario aqui
-    public void deleteSerieByCategory(int category) { }
+    public void deleteSeries() { }
 
     @Override
-    public void getSerie(final int category, final ListSerieCallBack callBack) {
+    public void getSeries(final ListSerieCallBack callBack) {
 
         if(CheckConnection.isConected(context)){
-            movieRemoteDataSource.getSerie(category, new ListSerieCallBack() {
+            movieRemoteDataSource.getSeries(new ListSerieCallBack() {
                 @Override
                 public void onSeriesLoaded(List<Serie> data) {
-                    refreshLocalSeries(category,data);
+                    refreshLocalSeries(data);
                     callBack.onSeriesLoaded(data);
                 }
 
                 @Override
                 public void onError(String message) {
-                    movieLocalDataSource.getSerie(category, new ListSerieCallBack() {
+                    movieLocalDataSource.getSeries(new ListSerieCallBack() {
                         @Override
                         public void onSeriesLoaded(List<Serie> data) {
                             callBack.onSeriesLoaded(data);
@@ -119,7 +126,7 @@ public class MovieRepositoryImpl implements MovieRepository {
             });
         }
         else{
-            movieLocalDataSource.getSerie(category, new ListSerieCallBack() {
+            movieLocalDataSource.getSeries(new ListSerieCallBack() {
                 @Override
                 public void onSeriesLoaded(List<Serie> data) {
                     callBack.onSeriesLoaded(data);
@@ -133,16 +140,16 @@ public class MovieRepositoryImpl implements MovieRepository {
         }
     }
 
-    private void refreshLocalMovies(int category, List<Movie> movies){
-        movieLocalDataSource.deleteMoviesByCategory(category);
+    private void refreshLocalMovies(List<Movie> movies){
+        movieLocalDataSource.deleteMovies();
         for (Movie movie : movies) {
             movieLocalDataSource.save(movie);
         }
 
     }
 
-    private void refreshLocalSeries(int category, List<Serie> series){
-        movieLocalDataSource.deleteSerieByCategory(category);
+    private void refreshLocalSeries(List<Serie> series){
+        movieLocalDataSource.deleteSeries();
         for (Serie serie : series) {
             movieLocalDataSource.save(serie);
         }

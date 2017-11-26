@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="movie"
+            type="com.frank.moviebook.data.Movie" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.frank.moviebook.moviedatail.ui.MovieDetailActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/tool_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </android.support.design.widget.AppBarLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/app_bar"
+                android:background="@color/colorPrimary">
+
+                <ImageView
+                    android:id="@+id/movie_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/detail_img_height"
+                    android:background="@color/colorAccent"
+                    android:scaleType="centerCrop"
+                    app:loadImage="@{movie.backdropPath}" />
+                />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/detail_img_height"
+                    android:background="@drawable/movie_mask" />
+
+                <TextView
+                    android:id="@+id/movie_title"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/movie_img"
+                    android:padding="10dp"
+                    android:text="@{movie.title}"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/container_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/movie_title">
+
+                    <TextView
+                        android:id="@+id/movie_date"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:padding="10dp"
+                        android:text="@{movie.date}"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/movie_votes"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:padding="10dp"
+                        android:text="@{@string/votes(movie.voteCount)}"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/movie_average"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:padding="10dp"
+                        android:text="@{@string/average(movie.voteAverage)}"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/movie_description"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:text="@{movie.overView}"
+                    android:textColor="@color/colorAccent"
+                    android:layout_below="@id/container_layout"
+                    />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

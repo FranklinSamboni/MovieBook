@@ -11,11 +11,10 @@ import java.util.List;
 
 public interface MainActivityView {
 
-    void navigateToMovieDetail(int idMovie);
     void navigateToSerieDetail(int idSerie);
 
-    void showMovies(List<Movie> movies);
-    void showSeries(List<Serie> series);
+    void showMovies(String title,List<Movie> movies);
+    void showSeries(String title,List<Serie> series);
     void showInitialMovie(Movie movie);
 
     void showError(String message);

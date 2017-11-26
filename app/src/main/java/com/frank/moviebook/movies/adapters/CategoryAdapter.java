@@ -14,6 +14,7 @@ import com.frank.moviebook.data.Movie;
 import com.frank.moviebook.data.Serie;
 import com.frank.moviebook.databinding.TemplateInitialMovieBinding;
 import com.frank.moviebook.movies.MainViewModel;
+import com.frank.moviebook.movies.ui.ItemClickListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,13 +31,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static int INITIAL_MOVIE = 0;
 
     Context context;
+    ItemClickListener itemClickListener;
 
     Movie movie;
-    List<Map<String, List>> categories;
+    List<Map<String,List>> categories;
 
-    public CategoryAdapter(Context context, List<Map<String, List>> categories) {
+    public CategoryAdapter(Context context, List<Map<String,List>> categories, ItemClickListener itemClickListener) {
         this.context = context;
         this.categories = categories;
+        this.itemClickListener = itemClickListener;
         movie = new Movie();
     }
 
@@ -64,7 +67,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 categoryViewHolder.categoryTitle.setText((String) entry.getKey());
 
-                HorizontalListAdapter horizontalListAdapter = new HorizontalListAdapter((List) entry.getValue());
+                HorizontalListAdapter horizontalListAdapter = new HorizontalListAdapter((List) entry.getValue(), itemClickListener);
                 categoryViewHolder.listRecyclerView.setAdapter(horizontalListAdapter);
                 categoryViewHolder.listRecyclerView.setLayoutManager(new LinearLayoutManager(context,
                         LinearLayoutManager.HORIZONTAL, false));
@@ -73,6 +76,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         else if(holder instanceof InitialMovieViewHolder){
             InitialMovieViewHolder initialMovieViewHolder = (InitialMovieViewHolder) holder;
             initialMovieViewHolder.bind(movie);
+            initialMovieViewHolder.binding.initialMovieLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    itemClickListener.navigateToMovieDetail(movie.getId());
+                }
+            });
+
         }
     }
 
@@ -89,33 +99,27 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return position;
     }
 
-    public void addMovies(String category, List<Movie> movies) {
+    public void addMovies(String categoryTitle, List<Movie> movies) {
         Map<String, List> data = new LinkedHashMap<>(1);
-        data.put(category, movies);
-        if (categories.size() < movies.get(0).getCategory() +1 ) { // LAS PELICULAS VAN DE LA POSICION 1 - 3
-            categories.add(data);
-        } else {
-            categories.add(movies.get(0).getCategory() + 1, data);
-        }
+        data.put(categoryTitle, movies);
+        categories.add(data);
         notifyDataSetChanged();
     }
 
-    public void addSeries(String category, List<Serie> series) {
+    public void addSeries(String categoryTitle, List<Serie> series) {
         Map<String, List> data = new LinkedHashMap<>(1);
-        data.put(category, series);
-        if (categories.size() < (series.get(0).getCategory() + 4)) { // SE INGRESAN LAS SERIES DESDE LA POSICION 4
-            categories.add(data);
-        } else {
-            categories.add(series.get(0).getCategory() + 4, data);
-        }
+        data.put(categoryTitle, series);
+        categories.add(data);
         notifyDataSetChanged();
     }
 
     public void showInitialMovie(Movie movie) {
+        if(categories.size() < 6){
+            categories.add(0,new HashMap<String, List>());
+        }
         this.movie = movie;
         notifyDataSetChanged();
     }
-
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
 

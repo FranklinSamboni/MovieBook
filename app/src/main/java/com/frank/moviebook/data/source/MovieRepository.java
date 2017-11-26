@@ -22,11 +22,12 @@ public interface MovieRepository {
     }
 
     long save(Movie movie);
-    void deleteMoviesByCategory(int category);
-    void getMovies(int category, final MovieRepository.ListMovieCallBack callBack);
+    void deleteMovies();
+    void getMovies(final MovieRepository.ListMovieCallBack callBack);
+    Movie getMovieById(int id);
 
     long save(Serie serie);
-    void deleteSerieByCategory(int category);
-    void getSerie(int category, final MovieRepository.ListSerieCallBack callBack);
+    void deleteSeries();
+    void getSeries(final MovieRepository.ListSerieCallBack callBack);
 
 }

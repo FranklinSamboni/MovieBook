@@ -17,7 +17,7 @@ import retrofit2.http.Query;
 public interface MovieService {
 
     @GET("movie/{category}")
-    Call<MovieDbResponse> getMovies(
+    Observable<MovieDbResponse> getMovies(
             @Path("category") String category,
             @Query("api_key") String apiKey,
             @Query("language") String language,
@@ -25,7 +25,7 @@ public interface MovieService {
             );
 
     @GET("tv/{category}")
-    Call<SerieDbResponse> getTVSeries(
+    Observable<SerieDbResponse> getTVSeries(
             @Path("category") String category,
             @Query("api_key") String apiKey,
             @Query("language") String language,
@@ -33,7 +33,7 @@ public interface MovieService {
     );
 
     @GET("search/movie")
-    Call<MovieDbResponse> searchMovies(
+    Observable<MovieDbResponse> searchMovies(
             @Query("api_key") String apiKey,
             @Query("language") String language,
             @Query("page") String page,

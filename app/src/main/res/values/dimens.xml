@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <dimen name="detail_img_height">200dp</dimen>
     <dimen name="initial_movie_img_height">180dp</dimen>
     <dimen name="item_category_height">215dp</dimen>
     <dimen name="layout_image_height">210dp</dimen>
 
     <dimen name="movie_image_height">200dp</dimen>
-    <dimen name="movie_image_width">130dp</dimen>
+    <dimen name="movie_image_width">120dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
