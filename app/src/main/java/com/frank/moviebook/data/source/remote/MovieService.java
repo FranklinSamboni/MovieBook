@@ -40,4 +40,12 @@ public interface MovieService {
             @Query("query") String text
     );
 
+    @GET("search/tv")
+    Observable<SerieDbResponse> searchSeries(
+            @Query("api_key") String apiKey,
+            @Query("language") String language,
+            @Query("page") String page,
+            @Query("query") String text
+    );
+
 }

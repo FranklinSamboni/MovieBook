@@ -12,6 +12,10 @@ import com.frank.moviebook.movies.di.MainComponent;
 import com.frank.moviebook.movies.di.MainModule;
 import com.frank.moviebook.movies.ui.ItemClickListener;
 import com.frank.moviebook.movies.ui.MainActivityView;
+import com.frank.moviebook.search.di.DaggerSearchComponent;
+import com.frank.moviebook.search.di.SearchComponent;
+import com.frank.moviebook.search.di.SearchModule;
+import com.frank.moviebook.search.ui.SearchView;
 
 import dagger.Module;
 
@@ -45,6 +49,16 @@ public class MovieBookApp extends Application {
 
     }
 
+    public SearchComponent getSearchComponent(SearchView searchView, ItemClickListener itemClickListener){
+        return DaggerSearchComponent
+                .builder()
+                .movieBookModule(getMovieBookModule())
+                .libsModule(getLibsModule())
+                .searchModule(getSearchModule(searchView,itemClickListener))
+                .build();
+
+    }
+
     public MovieBookModule getMovieBookModule() {
         return new MovieBookModule(this);
     }
@@ -59,5 +73,9 @@ public class MovieBookApp extends Application {
 
     public DetailModule getDetailModule() {
         return new DetailModule();
+    }
+
+    public SearchModule getSearchModule(SearchView searchView, ItemClickListener itemClickListener) {
+        return new SearchModule(searchView,itemClickListener);
     }
 }

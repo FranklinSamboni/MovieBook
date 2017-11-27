@@ -51,7 +51,7 @@ public class MainViewModel implements MovieRepository.ListSerieCallBack, MovieRe
         view.showMovies(titles[Globals.Category.POPULAR], getMovieByCategory(Globals.Category.POPULAR,data));
         view.showMovies(titles[Globals.Category.TOP_RATED], getMovieByCategory(Globals.Category.TOP_RATED,data));
         view.showMovies(titles[Globals.Category.UPCOMING], getMovieByCategory(Globals.Category.UPCOMING,data));
-        view.showInitialMovie(data.get(0));
+        view.showInitialMovie(data.get(10));
     }
 
     @Override

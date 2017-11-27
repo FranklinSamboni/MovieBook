@@ -6,7 +6,14 @@
         <variable
             name="movie"
             type="com.frank.moviebook.data.Movie" />
+
+        <variable
+            name="serie"
+            type="com.frank.moviebook.data.Serie"/>
+
     </data>
+
+
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -44,7 +51,7 @@
                     android:layout_height="@dimen/detail_img_height"
                     android:background="@color/colorAccent"
                     android:scaleType="centerCrop"
-                    app:loadImage="@{movie.backdropPath}" />
+                    app:loadImage="@{movie != null ? movie.backdropPath : serie.backdropPath}" />
                 />
 
                 <ImageView
@@ -59,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/movie_img"
                     android:padding="10dp"
-                    android:text="@{movie.title}"
+                    android:text="@{movie != null ? movie.title :serie.originalName}"
                     android:textColor="@color/colorAccent"
                     android:textStyle="bold" />
 
@@ -77,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:padding="10dp"
-                        android:text="@{movie.date}"
+                        android:text="@{movie != null ? movie.date :serie.date}"
                         android:textColor="@color/colorAccent"
                         android:textStyle="bold" />
 
@@ -88,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:padding="10dp"
-                        android:text="@{@string/votes(movie.voteCount)}"
+                        android:text="@{@string/votes(movie != null ? movie.voteCount : serie.voteCount)}"
                         android:textColor="@color/colorAccent"
                         android:textStyle="bold" />
 
@@ -99,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
                         android:padding="10dp"
-                        android:text="@{@string/average(movie.voteAverage)}"
+                        android:text="@{@string/average(movie != null ? movie.voteAverage : serie.voteAverage)}"
                         android:textColor="@color/colorAccent"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -110,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="10dp"
-                    android:text="@{movie.overView}"
+                    android:text="@{movie != null ? movie.overView : serie.overview}"
                     android:textColor="@color/colorAccent"
                     android:layout_below="@id/container_layout"
                     />

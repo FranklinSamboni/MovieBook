@@ -32,7 +32,7 @@ public class Serie {
     @SerializedName("backdrop_path")
     private String backdropPath;
 
-    private int category;
+    private Integer category;
 
     public int getId() {
         return id;
@@ -90,19 +90,19 @@ public class Serie {
         this.backdropPath = backdropPath;
     }
 
-    public int getCategory() {
-        return category;
-    }
-
-    public void setCategory(int category) {
-        this.category = category;
-    }
-
     public int getVoteCount() {
         return voteCount;
     }
 
     public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
     }
 }

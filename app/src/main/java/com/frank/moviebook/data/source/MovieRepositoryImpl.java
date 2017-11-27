@@ -41,6 +41,42 @@ public class MovieRepositoryImpl implements MovieRepository {
     public void deleteMovies() {}
 
     @Override
+    public Movie getMovieById(int id) {
+        return movieLocalDataSource.getMovieById(id);
+    }
+
+    @Override
+    public void getMoviesByName(final String name, final ListMovieCallBack callBack) {
+        movieLocalDataSource.getMoviesByName(name, new ListMovieCallBack() {
+            @Override
+            public void onMoviesLoaded(List<Movie> data) {
+                //if(data.size() > 0){
+                    callBack.onMoviesLoaded(data);
+                /*}
+                else {
+                    movieRemoteDataSource.getMoviesByName(name, new ListMovieCallBack() {
+                        @Override
+                        public void onMoviesLoaded(List<Movie> data) {
+                            callBack.onMoviesLoaded(data);
+                        }
+
+                        @Override
+                        public void onError(String message) {
+                            callBack.onError(message);
+                        }
+                    });
+                }*/
+            }
+
+            @Override
+            public void onError(String message) {
+                callBack.onError(message);
+            }
+        });
+    }
+
+
+    @Override
     public void getMovies(final MovieRepository.ListMovieCallBack callBack) {
 
         if(CheckConnection.isConected(context)){
@@ -82,13 +118,6 @@ public class MovieRepositoryImpl implements MovieRepository {
         }
     }
 
-    @Override
-    public Movie getMovieById(int id) {
-        return movieLocalDataSource.getMovieById(id);
-    }
-
-
-
     /*SERIES
     * */
 
@@ -97,6 +126,43 @@ public class MovieRepositoryImpl implements MovieRepository {
 
     @Override //NO es necesario aqui
     public void deleteSeries() { }
+
+    @Override
+    public Serie getSerieById(int idSerie) {
+        return movieLocalDataSource.getSerieById(idSerie);
+    }
+
+    @Override
+    public void getSeriesByName(final String name, final ListSerieCallBack callBack) {
+        movieLocalDataSource.getSeriesByName(name, new ListSerieCallBack() {
+            @Override
+            public void onSeriesLoaded(List<Serie> data) {
+                //if(data.size()>0){
+                    callBack.onSeriesLoaded(data);
+                /*}
+                else{
+                    movieRemoteDataSource.getSeriesByName(name, new ListSerieCallBack() {
+                        @Override
+                        public void onSeriesLoaded(List<Serie> data) {
+                            callBack.onSeriesLoaded(data);
+                        }
+
+                        @Override
+                        public void onError(String message) {
+                            callBack.onError(message
+
+                            );
+                        }
+                    });
+                }*/
+            }
+
+            @Override
+            public void onError(String message) {
+                callBack.onError(message);
+            }
+        });
+    }
 
     @Override
     public void getSeries(final ListSerieCallBack callBack) {
@@ -139,6 +205,8 @@ public class MovieRepositoryImpl implements MovieRepository {
             });
         }
     }
+
+
 
     private void refreshLocalMovies(List<Movie> movies){
         movieLocalDataSource.deleteMovies();

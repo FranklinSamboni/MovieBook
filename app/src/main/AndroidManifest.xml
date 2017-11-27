@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".moviedatail.ui.MovieDetailActivity" />
-        <activity android:name=".moviedatail.ui.SerieDetailActivity"></activity>
+        <activity android:name=".search.ui.SearchActivity"></activity>
     </application>
 
 </manifest>

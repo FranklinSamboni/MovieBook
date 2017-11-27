@@ -59,7 +59,7 @@ public class MovieLocalDataSource implements MovieRepository{
     @Override
     public void getMovies(final ListMovieCallBack callBack){
 
-        List<Movie> movies = getMovies();
+        List<Movie> movies = getMoviesWithArgs(null);
         if(movies != null){
             callBack.onMoviesLoaded(movies);
         }
@@ -89,9 +89,27 @@ public class MovieLocalDataSource implements MovieRepository{
         return movie;
     }
 
-    private List<Movie> getMovies(){
+    @Override
+    public void getMoviesByName(String name, ListMovieCallBack callBack) {
+        List<Movie> movies = getMoviesWithArgs(name);
+        if(movies != null){
+            callBack.onMoviesLoaded(movies);
+        }
+        else{
+            callBack.onError("No fue posible obtener la información de peliculas de la base de datos.");
+        }
+    }
+
+    private List<Movie> getMoviesWithArgs(String name){
+        String selection = null;
+        String[] selectionArgs = null;
+        if(name != null){
+            selection= MovieContract.MovieEntry.COLUMN_TITLE + " LIKE ? ";
+            selectionArgs = new String[]{ "%"+name+"%" };
+        }
+
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query( MovieContract.MovieEntry.TABLE_NAME, null,null,null,null,null,null);
+        Cursor cursor = db.query( MovieContract.MovieEntry.TABLE_NAME, null,selection,selectionArgs,null,null,null);
 
         List<Movie> movies = new ArrayList<>();
 
@@ -144,7 +162,7 @@ public class MovieLocalDataSource implements MovieRepository{
 
     @Override
     public void getSeries(ListSerieCallBack callBack) {
-        List<Serie> series = getSeries();
+        List<Serie> series = getSeriesWithArgs(null);
         if(series != null){
             callBack.onSeriesLoaded(series);
         }
@@ -153,24 +171,53 @@ public class MovieLocalDataSource implements MovieRepository{
         }
     }
 
-    private List<Serie> getSeries() {
+    @Override
+    public Serie getSerieById(int idSerie) {
+        String selection = MovieContract.SerieEntry .COLUMN_ID + " = ? ";
+        String[] selectionArgs = { String.valueOf(idSerie) };
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(MovieContract.SerieEntry.TABLE_NAME,null,null, null,null, null,null);
+        Cursor cursor = db.query( MovieContract.SerieEntry.TABLE_NAME, null,selection,selectionArgs,null,null,null);
+        Serie serie = null;
+        try{
+            if (cursor.moveToFirst()) {
+                serie = cursorToSerie(cursor);
+            }
+
+        }catch(Exception e){
+            Log.e("getSerieById", e.getMessage());
+        }
+        finally{
+            cursor.close();
+        }
+        return serie;
+    }
+
+    @Override
+    public void getSeriesByName(String name, ListSerieCallBack callBack) {
+        List<Serie> series = getSeriesWithArgs(name);
+        if(series != null){
+            callBack.onSeriesLoaded(series);
+        }
+        else{
+            callBack.onError("No fue posible obtener la información de las series de la base de datos.");
+        }
+    }
+
+    private List<Serie> getSeriesWithArgs(String name) {
+        String selection = null;
+        String[] selectionArgs = null;
+        if(name != null){
+            selection= MovieContract.SerieEntry.COLUMN_TITLE + " LIKE ? ";
+            selectionArgs = new String[]{ "%"+name+"%" };
+        }
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(MovieContract.SerieEntry.TABLE_NAME,null,selection, selectionArgs,null, null,null);
         List<Serie> series = new ArrayList<>();
 
         try{
             if (cursor.moveToFirst()) {
                 do {
-                    Serie serie = new Serie();
-                    serie.setId(cursor.getInt(0));
-                    serie.setOriginalName(cursor.getString(1));
-                    serie.setDate(cursor.getString(2));
-                    serie.setOverview(cursor.getString(3));
-                    serie.setVoteCount(cursor.getInt(4));
-                    serie.setVoteAverage(cursor.getDouble(5));
-                    serie.setPosterPath(cursor.getString(6));
-                    serie.setBackdropPath(cursor.getString(7));
-                    serie.setCategory(cursor.getInt(8));
+                    Serie serie = cursorToSerie(cursor);
                     series.add(serie);
 
                 } while (cursor.moveToNext());
@@ -199,5 +246,20 @@ public class MovieLocalDataSource implements MovieRepository{
         movie.setCategory(cursor.getInt(8));
         return movie;
     }
+
+    private Serie cursorToSerie(Cursor cursor) {
+        Serie serie = new Serie();
+        serie.setId(cursor.getInt(0));
+        serie.setOriginalName(cursor.getString(1));
+        serie.setDate(cursor.getString(2));
+        serie.setOverview(cursor.getString(3));
+        serie.setVoteCount(cursor.getInt(4));
+        serie.setVoteAverage(cursor.getDouble(5));
+        serie.setPosterPath(cursor.getString(6));
+        serie.setBackdropPath(cursor.getString(7));
+        serie.setCategory(cursor.getInt(8));
+        return serie;
+    }
+
 
 }

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.frank.moviebook.MovieBookApp;
 import com.frank.moviebook.R;
@@ -18,7 +20,7 @@ import com.frank.moviebook.moviedatail.ui.MovieDetailActivity;
 import com.frank.moviebook.movies.MainViewModel;
 import com.frank.moviebook.movies.adapters.CategoryAdapter;
 import com.frank.moviebook.movies.di.MainComponent;
-import com.frank.moviebook.moviedatail.ui.SerieDetailActivity;
+import com.frank.moviebook.search.ui.SearchActivity;
 
 import java.util.List;
 
@@ -69,6 +71,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.search_button){
+            navigateToSearch();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
     }
@@ -88,8 +104,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @Override
     public void navigateToSerieDetail(int idSerie) {
-        Intent intent = new Intent(this,SerieDetailActivity.class);
+        Intent intent = new Intent(this,MovieDetailActivity.class);
         intent.putExtra("idSerie",idSerie);
+        startActivity(intent);
+    }
+
+
+    public void navigateToSearch() {
+        Intent intent = new Intent(this,SearchActivity.class);
         startActivity(intent);
     }
 

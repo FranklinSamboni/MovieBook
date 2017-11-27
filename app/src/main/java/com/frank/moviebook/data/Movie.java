@@ -32,7 +32,7 @@ public class Movie {
     @SerializedName("backdrop_path")
     private String backdropPath;
 
-    private int category;
+    private Integer category;
 
     public int getId() {
         return id;
@@ -98,11 +98,11 @@ public class Movie {
         this.backdropPath = backdropPath;
     }
 
-    public int getCategory() {
+    public Integer getCategory() {
         return category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(Integer category) {
         this.category = category;
     }
 }

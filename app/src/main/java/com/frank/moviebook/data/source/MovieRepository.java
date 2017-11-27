@@ -2,6 +2,7 @@ package com.frank.moviebook.data.source;
 
 import com.frank.moviebook.data.Movie;
 import com.frank.moviebook.data.Serie;
+import com.frank.moviebook.search.SearchViewModel;
 
 import java.util.List;
 
@@ -25,9 +26,12 @@ public interface MovieRepository {
     void deleteMovies();
     void getMovies(final MovieRepository.ListMovieCallBack callBack);
     Movie getMovieById(int id);
+    void getMoviesByName(String name, MovieRepository.ListMovieCallBack callBack);
 
     long save(Serie serie);
     void deleteSeries();
     void getSeries(final MovieRepository.ListSerieCallBack callBack);
+    Serie getSerieById(int idSerie);
+    void getSeriesByName(String name, MovieRepository.ListSerieCallBack callBack);
 
 }

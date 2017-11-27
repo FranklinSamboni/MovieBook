@@ -15,4 +15,5 @@
     <string name="votes">Votes %d </string>
     <string name="average">Average %.2f </string>
     <string name="title_activity_movie_detail">MovieDetailActivity</string>
+    <string name="search">search</string>
 </resources>

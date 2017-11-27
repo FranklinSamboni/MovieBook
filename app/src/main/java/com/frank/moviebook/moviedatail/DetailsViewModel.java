@@ -21,7 +21,8 @@ public class DetailsViewModel {
         return movie;
     }
 
-    public Serie getSerieById(int Serie){
-        return null;
+    public Serie getSerieById(int idSerie){
+        Serie serie = movieRepository.getSerieById(idSerie);
+        return serie;
     }
 }

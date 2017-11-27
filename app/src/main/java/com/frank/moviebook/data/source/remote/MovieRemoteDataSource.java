@@ -1,5 +1,7 @@
 package com.frank.moviebook.data.source.remote;
 
+import android.util.Log;
+
 import com.frank.moviebook.Util.Globals;
 import com.frank.moviebook.data.Movie;
 import com.frank.moviebook.data.Serie;
@@ -57,6 +59,31 @@ public class MovieRemoteDataSource implements MovieRepository {
     public void deleteMovies() {}
     @Override
     public Movie getMovieById(int id) { return null; }
+
+    @Override
+    public void getMoviesByName(String name, final ListMovieCallBack callBack) {
+
+        Observable<List<Movie>> observable = service.searchMovies(API_KEY, Globals.LANGUAGE, Globals.PAGE, name )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Function<MovieDbResponse, List<Movie>>() {
+                    @Override
+                    public List<Movie> apply(MovieDbResponse movieDbResponse) throws Exception {
+                        return movieDbResponse.getResults();
+                    }
+                });
+        compositeDisposable.add(observable.subscribe(new Consumer<List<Movie>>() {
+            @Override
+            public void accept(List<Movie> movies) throws Exception {
+                callBack.onMoviesLoaded(movies);
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                callBack.onError(throwable.getMessage());
+            }
+        }));
+    }
 
 
     @Override
@@ -147,6 +174,36 @@ public class MovieRemoteDataSource implements MovieRepository {
                     }
                 }));
 
+    }
+
+    @Override
+    public Serie getSerieById(int idSerie) {return null;}
+
+    @Override
+    public void getSeriesByName(String name, final ListSerieCallBack callBack) {
+
+        Observable<List<Serie>> observable = service.searchSeries(API_KEY, Globals.LANGUAGE, Globals.PAGE, name )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Function<SerieDbResponse, List<Serie>>() {
+                    @Override
+                    public List<Serie> apply(SerieDbResponse serieDbResponse) throws Exception {
+                        return serieDbResponse.getResults();
+                    }
+                });
+
+        compositeDisposable.add(observable.subscribe(new Consumer<List<Serie>>() {
+            @Override
+            public void accept(List<Serie> series) throws Exception {
+                callBack.onSeriesLoaded(series);
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                Log.e("errrorrrr",throwable.getMessage());
+                callBack.onError(throwable.getMessage());
+            }
+        }));
     }
 
     private void setCategorySerie(int category, List<Serie> series) {
