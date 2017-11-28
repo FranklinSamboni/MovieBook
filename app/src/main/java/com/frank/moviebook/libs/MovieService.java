@@ -1,4 +1,4 @@
-package com.frank.moviebook.data.source.remote;
+package com.frank.moviebook.libs;
 
 import com.frank.moviebook.data.source.remote.Response.MovieDbResponse;
 import com.frank.moviebook.data.source.remote.Response.SerieDbResponse;

@@ -3,7 +3,7 @@ package com.frank.moviebook;
 import android.app.Application;
 
 import com.frank.moviebook.Util.Globals;
-import com.frank.moviebook.libs.LibsModule;
+import com.frank.moviebook.libs.di.LibsModule;
 import com.frank.moviebook.moviedatail.di.DaggerDetailComponent;
 import com.frank.moviebook.moviedatail.di.DetailComponent;
 import com.frank.moviebook.moviedatail.di.DetailModule;
@@ -16,8 +16,6 @@ import com.frank.moviebook.search.di.DaggerSearchComponent;
 import com.frank.moviebook.search.di.SearchComponent;
 import com.frank.moviebook.search.di.SearchModule;
 import com.frank.moviebook.search.ui.SearchView;
-
-import dagger.Module;
 
 /**
  * Created by FRANK on 19/11/2017.
@@ -64,7 +62,7 @@ public class MovieBookApp extends Application {
     }
 
     public LibsModule getLibsModule() { 
-        return new LibsModule(Globals.BASE_URL);
+        return new LibsModule();
     }
 
     public MainModule getMainModule(MainActivityView mainActivityView, ItemClickListener itemClickListener) {

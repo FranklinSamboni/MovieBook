@@ -47,18 +47,28 @@ public class MainViewModel implements MovieRepository.ListSerieCallBack, MovieRe
 
     @Override
     public void onMoviesLoaded(List<Movie> data) {
-        String [] titles = context.getResources().getStringArray(R.array.MoviesArray);
-        view.showMovies(titles[Globals.Category.POPULAR], getMovieByCategory(Globals.Category.POPULAR,data));
-        view.showMovies(titles[Globals.Category.TOP_RATED], getMovieByCategory(Globals.Category.TOP_RATED,data));
-        view.showMovies(titles[Globals.Category.UPCOMING], getMovieByCategory(Globals.Category.UPCOMING,data));
-        view.showInitialMovie(data.get(10));
+        if(data.size() > 0) {
+            String[] titles = context.getResources().getStringArray(R.array.MoviesArray);
+            view.showMovies(titles[Globals.Category.POPULAR], getMovieByCategory(Globals.Category.POPULAR, data));
+            view.showMovies(titles[Globals.Category.TOP_RATED], getMovieByCategory(Globals.Category.TOP_RATED, data));
+            view.showMovies(titles[Globals.Category.UPCOMING], getMovieByCategory(Globals.Category.UPCOMING, data));
+            view.showInitialMovie(data.get(10));
+        }
+        else{
+            view.showError(context.getString(R.string.movie_empty_data));
+        }
     }
 
     @Override
     public void onSeriesLoaded(List<Serie> data) {
-        String [] titles = context.getResources().getStringArray(R.array.SeriesArray);
-        view.showSeries(titles[Globals.Category.POPULAR], getSerieByCategory(Globals.Category.POPULAR,data));
-        view.showSeries(titles[Globals.Category.TOP_RATED], getSerieByCategory(Globals.Category.TOP_RATED,data));
+        if(data.size() > 0) {
+            String[] titles = context.getResources().getStringArray(R.array.SeriesArray);
+            view.showSeries(titles[Globals.Category.POPULAR], getSerieByCategory(Globals.Category.POPULAR, data));
+            view.showSeries(titles[Globals.Category.TOP_RATED], getSerieByCategory(Globals.Category.TOP_RATED, data));
+        }
+        else{
+            view.showError(context.getString(R.string.serie_empty_data));
+        }
     }
 
     @Override

@@ -1,8 +1,9 @@
-package com.frank.moviebook.libs;
+package com.frank.moviebook.libs.di;
 
 import android.app.Application;
 
 import com.frank.moviebook.Util.Globals;
+import com.frank.moviebook.libs.MovieClient;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,10 +24,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class LibsModule {
 
-    String baseUrl;
+    public LibsModule() {
 
-    public LibsModule(String baseUrl) {
-        this.baseUrl = baseUrl;
     }
 
     @Singleton
@@ -34,6 +33,21 @@ public class LibsModule {
     CompositeDisposable provideCompositeDisposable(){
         return new CompositeDisposable();
     }
+
+    @Provides
+    @Singleton
+    MovieClient provideMovieClient(){
+        return new MovieClient();
+    }
+
+
+    /*
+    @Provides
+    @Singleton
+    Retrofit provideRetrofit(OkHttpClient client){
+        return null;
+    }
+
 
     @Provides
     @Singleton
@@ -53,17 +67,7 @@ public class LibsModule {
                 .cache(cache)
                 .build();
         return client;
-    }
+    }*/
 
-    @Provides
-    @Singleton
-    Retrofit provideRetrofit(OkHttpClient client){
-        return new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(client)
-                .build();
-    }
 
 }

@@ -1,4 +1,4 @@
-package com.frank.moviebook.libs;
+package com.frank.moviebook.libs.di;
 
 import com.frank.moviebook.MovieBookModule;
 

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.frank.moviebook.data.source.MovieRepository;
 import com.frank.moviebook.data.source.MovieRepositoryImpl;
+import com.frank.moviebook.libs.MovieClient;
 import com.frank.moviebook.moviedatail.DetailsViewModel;
 
 import javax.inject.Singleton;
@@ -30,8 +31,8 @@ public class DetailModule {
 
     @Singleton
     @Provides
-    MovieRepository providesMovieRepository(Context context, Retrofit retrofit, CompositeDisposable compositeDisposable){
-        return new MovieRepositoryImpl(context, retrofit, compositeDisposable);
+    MovieRepository providesMovieRepository(Context context, MovieClient movieClient, CompositeDisposable compositeDisposable){
+        return new MovieRepositoryImpl(context, movieClient, compositeDisposable);
     }
 
 }

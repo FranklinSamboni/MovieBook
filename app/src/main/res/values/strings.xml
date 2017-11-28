@@ -16,4 +16,6 @@
     <string name="average">Average %.2f </string>
     <string name="title_activity_movie_detail">MovieDetailActivity</string>
     <string name="search">search</string>
+    <string name="movie_empty_data">No hay datos de peliculas para mostrar</string>
+    <string name="serie_empty_data">No hay datos de series para mostrar</string>
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.frank.moviebook.data.source.MovieRepository;
 import com.frank.moviebook.data.source.MovieRepositoryImpl;
+import com.frank.moviebook.libs.MovieClient;
 import com.frank.moviebook.movies.MainViewModel;
 import com.frank.moviebook.movies.adapters.CategoryAdapter;
 import com.frank.moviebook.movies.ui.ItemClickListener;
@@ -54,8 +55,8 @@ public class MainModule {
 
     @Singleton
     @Provides
-    MovieRepository providesMovieRepository(Context context, Retrofit retrofit,CompositeDisposable compositeDisposable){
-        return new MovieRepositoryImpl(context, retrofit, compositeDisposable);
+    MovieRepository providesMovieRepository(Context context, MovieClient movieClient, CompositeDisposable compositeDisposable){
+        return new MovieRepositoryImpl(context, movieClient, compositeDisposable);
     }
 
     @Singleton

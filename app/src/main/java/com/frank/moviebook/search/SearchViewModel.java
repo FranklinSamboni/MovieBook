@@ -49,10 +49,7 @@ public class SearchViewModel implements MovieRepository.ListSerieCallBack, Movie
 
     @Override
     public void onMoviesLoaded(List<Movie> data) {
-        /*if(data.get(0).getCategory() == null){
-            searchView.showMovies("Movies",data);
-        }
-        else {*/
+        if(data.size()>0){
             String [] titles = context.getResources().getStringArray(R.array.MoviesArray);
             List<Movie> movies = getMovieByCategory(Globals.Category.POPULAR,data);
             if(movies.size() > 0){
@@ -66,16 +63,16 @@ public class SearchViewModel implements MovieRepository.ListSerieCallBack, Movie
             if(movies.size() > 0){
                 searchView.showMovies(titles[Globals.Category.UPCOMING], movies);
             }
+        }
+        else{
+            searchView.showError("No se encontraron resultados");
+        }
 
-        //}
     }
 
     @Override
     public void onSeriesLoaded(List<Serie> data) {
-        /*if(data.get(0).getCategory() == null){
-            searchView.showSeries("Series",data);
-        }
-        else {*/
+        if(data.size()>0){
             String [] titles = context.getResources().getStringArray(R.array.SeriesArray);
             List<Serie> series = getSerieByCategory(Globals.Category.POPULAR,data);
             if(series.size() > 0){
@@ -85,7 +82,10 @@ public class SearchViewModel implements MovieRepository.ListSerieCallBack, Movie
             if(series.size() > 0){
                 searchView.showSeries(titles[Globals.Category.TOP_RATED], series);
             }
-        //}
+        }
+        else {
+            searchView.showError("No se encontraron resultados");
+        }
     }
 
     @Override

@@ -2,8 +2,10 @@ package com.frank.moviebook.search.di;
 
 import android.content.Context;
 
+import com.frank.moviebook.data.Movie;
 import com.frank.moviebook.data.source.MovieRepository;
 import com.frank.moviebook.data.source.MovieRepositoryImpl;
+import com.frank.moviebook.libs.MovieClient;
 import com.frank.moviebook.movies.adapters.CategoryAdapter;
 import com.frank.moviebook.movies.ui.ItemClickListener;
 import com.frank.moviebook.search.SearchViewModel;
@@ -67,8 +69,8 @@ public class SearchModule {
 
     @Singleton
     @Provides
-    MovieRepository providesMovieRepository(Context context, Retrofit retrofit, CompositeDisposable compositeDisposable){
-        return new MovieRepositoryImpl(context,retrofit,compositeDisposable);
+    MovieRepository providesMovieRepository(Context context, MovieClient movieClient, CompositeDisposable compositeDisposable){
+        return new MovieRepositoryImpl(context,movieClient,compositeDisposable);
     }
 
 

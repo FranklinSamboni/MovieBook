@@ -8,27 +8,20 @@ import com.frank.moviebook.data.Serie;
 import com.frank.moviebook.data.source.MovieRepository;
 import com.frank.moviebook.data.source.remote.Response.MovieDbResponse;
 import com.frank.moviebook.data.source.remote.Response.SerieDbResponse;
+import com.frank.moviebook.libs.MovieClient;
+import com.frank.moviebook.libs.MovieService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.Scheduler;
-import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
@@ -37,13 +30,13 @@ import retrofit2.Retrofit;
 
 public class MovieRemoteDataSource implements MovieRepository {
 
-    public final String API_KEY = "5f9b575bdd7b895c79917da012169744";
+
 
     private MovieService service;
     private CompositeDisposable compositeDisposable;
 
-    public MovieRemoteDataSource(Retrofit retrofit, CompositeDisposable compositeDisposable) {
-        this.service = retrofit.create(MovieService.class);
+    public MovieRemoteDataSource(MovieClient movieClient, CompositeDisposable compositeDisposable) {
+        this.service = movieClient.getMovieService();
         this.compositeDisposable = compositeDisposable;
     }
 
@@ -63,7 +56,7 @@ public class MovieRemoteDataSource implements MovieRepository {
     @Override
     public void getMoviesByName(String name, final ListMovieCallBack callBack) {
 
-        Observable<List<Movie>> observable = service.searchMovies(API_KEY, Globals.LANGUAGE, Globals.PAGE, name )
+        Observable<List<Movie>> observable = service.searchMovies(Globals.API_KEY, Globals.LANGUAGE, Globals.PAGE, name )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new Function<MovieDbResponse, List<Movie>>() {
@@ -182,7 +175,7 @@ public class MovieRemoteDataSource implements MovieRepository {
     @Override
     public void getSeriesByName(String name, final ListSerieCallBack callBack) {
 
-        Observable<List<Serie>> observable = service.searchSeries(API_KEY, Globals.LANGUAGE, Globals.PAGE, name )
+        Observable<List<Serie>> observable = service.searchSeries(Globals.API_KEY, Globals.LANGUAGE, Globals.PAGE, name )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new Function<SerieDbResponse, List<Serie>>() {
@@ -219,7 +212,7 @@ public class MovieRemoteDataSource implements MovieRepository {
     }
 
     private Observable<SerieDbResponse> getSerieObservableByCategory(int category) {
-        return service.getTVSeries(Globals.Category.nameCategory[category], API_KEY, Globals.LANGUAGE, Globals.PAGE)
+        return service.getTVSeries(Globals.Category.nameCategory[category], Globals.API_KEY, Globals.LANGUAGE, Globals.PAGE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(new Function<Throwable, SerieDbResponse>() {
@@ -231,7 +224,7 @@ public class MovieRemoteDataSource implements MovieRepository {
     }
 
     private Observable<MovieDbResponse> getMovieObservableByCategory(int category) {
-        return service.getMovies(Globals.Category.nameCategory[category], API_KEY, Globals.LANGUAGE, Globals.PAGE)
+        return service.getMovies(Globals.Category.nameCategory[category], Globals.API_KEY, Globals.LANGUAGE, Globals.PAGE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(new Function<Throwable, MovieDbResponse>() {

@@ -1,8 +1,7 @@
 package com.frank.moviebook.movies.di;
 
 import com.frank.moviebook.MovieBookModule;
-import com.frank.moviebook.libs.LibsModule;
-import com.frank.moviebook.movies.MainViewModel;
+import com.frank.moviebook.libs.di.LibsModule;
 import com.frank.moviebook.movies.ui.MainActivity;
 
 import javax.inject.Singleton;

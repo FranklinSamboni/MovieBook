@@ -8,6 +8,7 @@ public class Globals {
 
     public static final String URL_IMAGES = "https://image.tmdb.org/t/p/w640";
     public static final String BASE_URL = "https://api.themoviedb.org/3/";
+    public static final String API_KEY = "5f9b575bdd7b895c79917da012169744";
 
     public static final String URL_SEARCH = "/search/movie";
 

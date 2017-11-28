@@ -7,6 +7,7 @@ import com.frank.moviebook.data.Movie;
 import com.frank.moviebook.data.Serie;
 import com.frank.moviebook.data.source.local.MovieLocalDataSource;
 import com.frank.moviebook.data.source.remote.MovieRemoteDataSource;
+import com.frank.moviebook.libs.MovieClient;
 
 import java.util.List;
 
@@ -25,10 +26,10 @@ public class MovieRepositoryImpl implements MovieRepository {
     private Context context;
     private CompositeDisposable compositeDisposable;
 
-    public MovieRepositoryImpl(Context context, Retrofit retrofit, CompositeDisposable compositeDisposable) {
+    public MovieRepositoryImpl(Context context, MovieClient movieClient, CompositeDisposable compositeDisposable) {
         this.context = context;
         this.movieLocalDataSource = new MovieLocalDataSource(context);
-        this.movieRemoteDataSource = new MovieRemoteDataSource(retrofit, compositeDisposable);
+        this.movieRemoteDataSource = new MovieRemoteDataSource(movieClient, compositeDisposable);
     }
 
     /*PELICULAS

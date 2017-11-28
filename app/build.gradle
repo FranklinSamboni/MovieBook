@@ -22,6 +22,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -46,5 +52,8 @@ dependencies {
     compile "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroid"
     compile "io.reactivex.rxjava2:rxjava:$rootProject.rxJava"
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+
+    testImplementation "org.robolectric:robolectric:3.5.1"
+    testCompile "org.mockito:mockito-core:2.+"
 
 }
